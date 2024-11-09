@@ -1,0 +1,20 @@
+{% extends 'plants/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Messages from Users</h2>
+    <div class="row">
+        {% for message in messages %}
+            <div class="col-md-6 mb-4">
+                <div class="message-card">
+                    <h5>{{ message.first_name }} {{ message.last_name }}</h5>
+                    <p><strong>{{ message.email }}</strong></p>
+                    <p>{{ message.message }}</p>
+                    <p><small>Received on: {{ message.created_at }}</small></p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

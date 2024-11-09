@@ -1,0 +1,35 @@
+{% extends 'plants/base.html' %}
+
+{% block title %}Plant Details{% endblock %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="post-card">
+            <!-- Plant Image -->
+            <img src="{{ plant.image.url }}" class="plant-image mb-4" alt="{{ plant.name }}">
+
+            <!-- Plant Details -->
+            <h2>{{ plant.name }}</h2>
+            <p><strong>Category:</strong> {{ plant.category }}</p>
+            <p><strong>Edible:</strong> {{ plant.is_edible|yesno:"Yes,No" }}</p>
+            <p><strong>Used For:</strong> {{ plant.used_for }}</p>
+            <p><strong>About:</strong></p>
+            <p>{{ plant.about }}</p>
+            <p><strong>Created At:</strong> {{ plant.created_at|date:"Y-m-d H:i" }}</p>
+        </div>
+
+        <!-- Button Container for Actions -->
+        <div class="button-container mt-4">
+            <a href="{% url 'plants:search_plants_view' %}" class="btn">Back to Plant List</a>
+            
+            <!-- Update Button -->
+            <a href="{% url 'plants:update_plant_view' plant.id %}" class="btn btn-warning mx-2">Update Plant</a>
+            
+            <!-- Delete Button -->
+            <form action="{% url 'plants:delete_plant_view' plant.id %}" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this plant?');">Delete Plant</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'plants/base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-end mb-4">
+            <form action="{% url 'plants:search_plants_view' %}" method="GET" class="w-100">
+                <div class="d-flex gap-3">
+                    <!-- Removed 'required' attribute to allow empty search -->
+                    <input type="search" class="form-control" value="{{ request.GET.search }}" name="search" placeholder="Search plants..." />
+
+                    <!-- Category Dropdown -->
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="fruit" {% if request.GET.category == 'fruit' %} selected {% endif %}>Fruit</option>
+                        <option value="vegetable" {% if request.GET.category == 'vegetable' %} selected {% endif %}>Vegetable</option>
+                        <option value="herb" {% if request.GET.category == 'herb' %} selected {% endif %}>Herb</option>
+                    </select>
+
+                    <!-- Edibility Filter -->
+                    <select name="is_edible" class="form-select">
+                        <option value="">All Edibility Status</option>
+                        <option value="true" {% if request.GET.is_edible == 'true' %}selected{% endif %}>Edible</option>
+                        <option value="false" {% if request.GET.is_edible == 'false' %}selected{% endif %}>Not Edible</option>
+                    </select>
+
+                    <!-- Submit Button -->
+                    <input type="submit" value="Apply" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+
+        {% if plants %}
+            <h1>Search Results ({{ plants.count }})</h1>
+            <div class="posts-container">
+                {% for plant in plants %}
+                    <div class="post-card mb-4">
+                        <!-- Plant Image -->
+                        <img src="{{ plant.image.url }}" style="width: 300px" alt="{{ plant.name }}">
+
+                        <!-- Clickable Plant Name to navigate to detail view -->
+                        <a href="{% url 'plants:plant_detail_view' plant.id %}">
+                            <h2>{{ plant.name }}</h2>
+                        </a>
+                        
+                        <p><strong>ID:</strong> {{ plant.id }}</p>
+                        <p class="post-content">{{ plant.used_for }}</p>
+                        <p class="post-meta"><strong>Published on:</strong> {{ plant.created_at|date:"Y-m-d H:i" }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No plants available.</p>
+        {% endif %}
+    </div>
+{% endblock %}

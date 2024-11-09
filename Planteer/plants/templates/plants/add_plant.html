@@ -1,0 +1,9 @@
+{% extends 'plants/base.html' %}
+{% block content %}
+<h2>Add New Plant</h2>
+<form method="POST" action="{% url 'plants:add_plant_view' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ plant_form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
